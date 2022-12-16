@@ -36,6 +36,9 @@ void add(int a[10][10], int r1, int c1, int b[10][10], int r2, int c2, int ans[1
     return;
     }
 
+  for (int cx = 9; cx > 0;cx--)
+    
+
   for (int i = 0;i < r1;i++) {
     for (int j = 0;j < c1;j++) {
       ans[i][j] = a[i][j] + b[i][j];
