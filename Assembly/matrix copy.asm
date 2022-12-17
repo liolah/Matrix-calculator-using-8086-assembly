@@ -582,6 +582,6 @@ enter_val_b_msg db 10, 13,"Enter the values in matrix B:", 10, 13, '$'
 
 op_msg      db "Select the required operation (A ? B) (+ - *):", 10, 13, '$'
 add_res_msg db "The result matrix of adding the matrices A and B is:", 10, 13, '$'
-sub_res_msg db "The result matrix of subtracting the matrix B from A is:", 10, 13, '$'
+sub_res_msg db "The result matrix of subtracting the matrices A and B is:", 10, 13, '$'
 mul_res_msg db "The result matrix of multiplying the matrices A and B is:", 10, 13, '$'
 invalid_op  db 10, 13,"Invalid operation! Reenter a valid operator.", 10, 13, '$'
