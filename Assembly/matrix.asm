@@ -3,7 +3,6 @@ org 100h
 
 call main
 
-  terminate:
 ret
 
 ;main proc
@@ -75,7 +74,8 @@ main PROC
   overflow:                   ;Show the overflow error message and exit the program
   LEA DX, overflow_msg
   CALL print_string
-  JMP terminate
+  CALL clear_screan
+  ret
 main ENDP
 
 ;Multiplies the matrices
