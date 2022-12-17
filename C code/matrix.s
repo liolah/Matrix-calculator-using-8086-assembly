@@ -170,7 +170,7 @@ mul:
 	addl	$1, -12(%rbp)
 .L12:
 	movl	-12(%rbp), %eax
-	cmpl	56(%rbp), %eax
+	cmpl	32(%rbp), %eax
 	jl	.L13
 	addl	$1, -8(%rbp)
 .L11:
@@ -230,13 +230,16 @@ add:
 	call	puts
 	jmp	.L16
 .L18:
-	movl	$0, -4(%rbp)
+	movl	$9, -4(%rbp)
 	jmp	.L20
-.L23:
+.L25:
 	movl	$0, -8(%rbp)
 	jmp	.L21
-.L22:
-	movl	-4(%rbp), %eax
+.L24:
+	movl	$0, -12(%rbp)
+	jmp	.L22
+.L23:
+	movl	-8(%rbp), %eax
 	movslq	%eax, %rdx
 	movq	%rdx, %rax
 	salq	$2, %rax
@@ -245,10 +248,10 @@ add:
 	movq	%rax, %rdx
 	movq	16(%rbp), %rax
 	addq	%rax, %rdx
-	movl	-8(%rbp), %eax
+	movl	-12(%rbp), %eax
 	cltq
 	movl	(%rdx,%rax,4), %r8d
-	movl	-4(%rbp), %eax
+	movl	-8(%rbp), %eax
 	movslq	%eax, %rdx
 	movq	%rdx, %rax
 	salq	$2, %rax
@@ -257,10 +260,10 @@ add:
 	movq	%rax, %rdx
 	movq	40(%rbp), %rax
 	addq	%rax, %rdx
-	movl	-8(%rbp), %eax
+	movl	-12(%rbp), %eax
 	cltq
 	movl	(%rdx,%rax,4), %ecx
-	movl	-4(%rbp), %eax
+	movl	-8(%rbp), %eax
 	movslq	%eax, %rdx
 	movq	%rdx, %rax
 	salq	$2, %rax
@@ -270,19 +273,23 @@ add:
 	movq	64(%rbp), %rax
 	addq	%rax, %rdx
 	addl	%r8d, %ecx
-	movl	-8(%rbp), %eax
+	movl	-12(%rbp), %eax
 	cltq
 	movl	%ecx, (%rdx,%rax,4)
+	addl	$1, -12(%rbp)
+.L22:
+	movl	-12(%rbp), %eax
+	cmpl	32(%rbp), %eax
+	jl	.L23
 	addl	$1, -8(%rbp)
 .L21:
 	movl	-8(%rbp), %eax
-	cmpl	32(%rbp), %eax
-	jl	.L22
-	addl	$1, -4(%rbp)
-.L20:
-	movl	-4(%rbp), %eax
 	cmpl	24(%rbp), %eax
-	jl	.L23
+	jl	.L24
+	subl	$1, -4(%rbp)
+.L20:
+	cmpl	$0, -4(%rbp)
+	jg	.L25
 	movl	32(%rbp), %ecx
 	movl	24(%rbp), %edx
 	movq	64(%rbp), %rax
@@ -317,26 +324,26 @@ sub:
 	movq	%r9, 40(%rbp)
 	movl	24(%rbp), %eax
 	cmpl	48(%rbp), %eax
-	jne	.L25
+	jne	.L27
 	movl	32(%rbp), %eax
 	cmpl	56(%rbp), %eax
-	jne	.L25
+	jne	.L27
 	cmpl	$0, 32(%rbp)
-	je	.L25
+	je	.L27
 	cmpl	$0, 24(%rbp)
-	jne	.L26
-.L25:
+	jne	.L28
+.L27:
 	leaq	.LC3(%rip), %rax
 	movq	%rax, %rcx
 	call	puts
-	jmp	.L24
-.L26:
+	jmp	.L26
+.L28:
 	movl	$0, -4(%rbp)
-	jmp	.L28
-.L31:
+	jmp	.L30
+.L33:
 	movl	$0, -8(%rbp)
-	jmp	.L29
-.L30:
+	jmp	.L31
+.L32:
 	movl	-4(%rbp), %eax
 	movslq	%eax, %rdx
 	movq	%rdx, %rax
@@ -375,15 +382,15 @@ sub:
 	cltq
 	movl	%ecx, (%rdx,%rax,4)
 	addl	$1, -8(%rbp)
-.L29:
+.L31:
 	movl	-8(%rbp), %eax
 	cmpl	32(%rbp), %eax
-	jl	.L30
+	jl	.L32
 	addl	$1, -4(%rbp)
-.L28:
+.L30:
 	movl	-4(%rbp), %eax
 	cmpl	24(%rbp), %eax
-	jl	.L31
+	jl	.L33
 	movl	32(%rbp), %ecx
 	movl	24(%rbp), %edx
 	movq	64(%rbp), %rax
@@ -391,7 +398,7 @@ sub:
 	movq	%rax, %rcx
 	call	print
 	nop
-.L24:
+.L26:
 	addq	$48, %rsp
 	popq	%rbp
 	ret
@@ -485,11 +492,11 @@ main:
 	movq	%rax, %rcx
 	call	puts
 	movl	$0, 1180(%rbp)
-	jmp	.L33
-.L36:
+	jmp	.L35
+.L38:
 	movl	$0, 1176(%rbp)
-	jmp	.L34
-.L35:
+	jmp	.L36
+.L37:
 	leaq	752(%rbp), %rcx
 	movl	1176(%rbp), %eax
 	movslq	%eax, %r8
@@ -507,15 +514,15 @@ main:
 	movq	%rax, %rcx
 	call	scanf
 	addl	$1, 1176(%rbp)
-.L34:
+.L36:
 	movl	1156(%rbp), %eax
 	cmpl	%eax, 1176(%rbp)
-	jl	.L35
+	jl	.L37
 	addl	$1, 1180(%rbp)
-.L33:
+.L35:
 	movl	1164(%rbp), %eax
 	cmpl	%eax, 1180(%rbp)
-	jl	.L36
+	jl	.L38
 	leaq	.LC9(%rip), %rax
 	movq	%rax, %rcx
 	call	puts
@@ -539,11 +546,11 @@ main:
 	movq	%rax, %rcx
 	call	puts
 	movl	$0, 1172(%rbp)
-	jmp	.L37
-.L40:
+	jmp	.L39
+.L42:
 	movl	$0, 1168(%rbp)
-	jmp	.L38
-.L39:
+	jmp	.L40
+.L41:
 	leaq	352(%rbp), %rcx
 	movl	1168(%rbp), %eax
 	movslq	%eax, %r8
@@ -561,15 +568,15 @@ main:
 	movq	%rax, %rcx
 	call	scanf
 	addl	$1, 1168(%rbp)
-.L38:
+.L40:
 	movl	1152(%rbp), %eax
 	cmpl	%eax, 1168(%rbp)
-	jl	.L39
+	jl	.L41
 	addl	$1, 1172(%rbp)
-.L37:
+.L39:
 	movl	1160(%rbp), %eax
 	cmpl	%eax, 1172(%rbp)
-	jl	.L40
+	jl	.L42
 	leaq	.LC11(%rip), %rax
 	movq	%rax, %rcx
 	call	puts
@@ -581,13 +588,13 @@ main:
 	movzbl	-49(%rbp), %eax
 	movsbl	%al, %eax
 	cmpl	$45, %eax
-	je	.L41
-	cmpl	$45, %eax
-	jg	.L42
-	cmpl	$42, %eax
 	je	.L43
+	cmpl	$45, %eax
+	jg	.L44
+	cmpl	$42, %eax
+	je	.L45
 	cmpl	$43, %eax
-	jne	.L42
+	jne	.L44
 	leaq	.LC13(%rip), %rax
 	movq	%rax, %rcx
 	call	puts
@@ -605,8 +612,8 @@ main:
 	movl	%r10d, %r8d
 	movq	%rax, %rcx
 	call	add
-	jmp	.L44
-.L41:
+	jmp	.L46
+.L43:
 	leaq	.LC14(%rip), %rax
 	movq	%rax, %rcx
 	call	puts
@@ -624,8 +631,8 @@ main:
 	movl	%r10d, %r8d
 	movq	%rax, %rcx
 	call	sub
-	jmp	.L44
-.L43:
+	jmp	.L46
+.L45:
 	leaq	.LC15(%rip), %rax
 	movq	%rax, %rcx
 	call	puts
@@ -643,13 +650,13 @@ main:
 	movl	%r10d, %r8d
 	movq	%rax, %rcx
 	call	mul
-	jmp	.L44
-.L42:
+	jmp	.L46
+.L44:
 	leaq	.LC16(%rip), %rax
 	movq	%rax, %rcx
 	call	puts
 	nop
-.L44:
+.L46:
 	movl	$0, %eax
 	addq	$1320, %rsp
 	popq	%rdi

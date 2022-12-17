@@ -21,7 +21,7 @@ void mul(int a[10][10], int r1, int c1, int b[10][10], int r2, int c2, int ans[1
   for (int i = 0;i < r1;i++) {
     for (int j = 0;j < c2;j++) {
       ans[i][j] = 0;
-      for (int k = 0;k < c2;k++) {
+      for (int k = 0;k < c1;k++) {
         ans[i][j] += (a[i][k] * b[k][j]);
         }
       }
@@ -37,13 +37,13 @@ void add(int a[10][10], int r1, int c1, int b[10][10], int r2, int c2, int ans[1
     }
 
   for (int cx = 9; cx > 0;cx--)
-    
 
-  for (int i = 0;i < r1;i++) {
-    for (int j = 0;j < c1;j++) {
-      ans[i][j] = a[i][j] + b[i][j];
+
+    for (int i = 0;i < r1;i++) {
+      for (int j = 0;j < c1;j++) {
+        ans[i][j] = a[i][j] + b[i][j];
+        }
       }
-    }
 
   print(ans, r1, c1);
   }

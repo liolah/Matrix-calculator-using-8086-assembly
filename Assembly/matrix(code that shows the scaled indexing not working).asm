@@ -9,7 +9,7 @@ ret
 main PROC
 
   CALL take_input
-  CALL subtraction
+  CALL addition
   CALL newline
   MOV BX, ra
   MOV AL, BL
@@ -31,44 +31,52 @@ multiply ENDP
 
 ;Adds the matrices
 addition PROC
-  MOV BX, 0
   MOV CX, ra
+  MOV BX, CX
+  DEC BX
+  MOV AX, BX
+  PUSH DX
+  MOV DX, AX
+  ADD AX, DX
+  MUL ten
+  POP DX
+  MOV BX, AX
   L1:
-  MOV SI, 0
   PUSH CX
   MOV CX, ca
   L2:
-  MOV DX, matrixA[BX +  SI]
-  MOV WORD PTR matrixC[BX +  SI], DX
-  MOV DX, matrixB[BX +  SI]
-  ADD WORD PTR matrixC[BX +  SI], DX
+  MOV SI, CX
+  DEC SI
+  MOV DX, matrixA[BX + SI * 2]
+  MOV   matrixC[BX + SI * 2], DX
+  MOV DX, matrixB[BX + SI * 2]
+  ADD   matrixC[BX + SI * 2], DX
   JO overflow
-  ADD SI, 2
   LOOP L2
   POP CX
-  ADD BX, 20
+  SUB BX, 20
   LOOP L1
   ret
 addition ENDP
 
 ;subtracts the matrices
 subtraction PROC
-  MOV BX, 0
   MOV CX, ra
   L3:
-  MOV SI, 0
+  MOV BX, CX
+  DEC BX
   PUSH CX
   MOV CX, ca
   L4:
-  MOV DX, matrixA[BX +  SI]
-  MOV WORD PTR matrixC[BX +  SI], DX
-  MOV DX, matrixB[BX +  SI]
-  SUB WORD PTR matrixC[BX +  SI], DX
+  MOV SI, CX
+  DEC SI
+  MOV DX, matrixA[BX + SI * 2]
+  MOV   matrixC[BX + SI * 2], DX
+  MOV DX, matrixB[BX + SI * 2]
+  SUB   matrixC[BX + SI * 2], DX
   JO overflow
-  ADD SI, 2
   LOOP L4
   POP CX
-  ADD BX, 20
   LOOP L3
   ret
 subtraction ENDP
@@ -94,30 +102,39 @@ advance_cursor_pos PROC
   INC cursor_pos_counter
   POPA
   ret
+  ret
 advance_cursor_pos ENDP
 ;Prints the matrices
 print_matrix PROC
-  MOV BX, 0
   MOV CX, 0
-  MOV CL, AL      ;No. of rows is passed in AL
+  MOV CL, AL
+  MOV BX, CX
+  DEC BX
+  PUSH AX
+  MOV AX, BX
+  PUSH DX
+  MOV DX, AX
+  ADD AX, DX
+  MUL ten
+  POP DX
+  MOV BX, AX
+  POP AX
   O1:
-  MOV SI, 0
   PUSH CX
   MOV CX, 0
-  MOV CL, AH      ;No. of columns is passed in AH
+  MOV CL, AH
   O2:
-  PUSH AX
-  MOV AX, matrixC[BX +  SI]
+  MOV SI, CX
+  DEC SI
+  MOV AX, matrixC[BX + SI * 2]
   CALL print_number
-  MOV DL, 9       ;Print Tab
+  MOV DL, 9
   MOV AH, 2
   INT 21h
-  ADD SI, 2
-  POP AX
   LOOP O2
   CALL newline
   POP CX
-  ADD BX, 20
+  SUB BX, 20
   LOOP O1
   ret
 print_matrix ENDP
@@ -140,15 +157,6 @@ delete_char PROC
   ret
 delete_char ENDP
 
-;Scrolls down until the screen is empty
-clear_screan PROC
-  PUSHA
-  MOV AH, 7  ;Scroll down
-  MOV AL,0   ;Until the entire window is cleared
-  INT 10h
-  POPA
-  ret
-clear_screan ENDP
 ;handles the user input
 take_input PROC
   ;Make the cursor blink
@@ -183,26 +191,34 @@ take_input PROC
   LEA DX, enter_val_a_msg
   CALL print_string
 
-  MOV BX, 0
   MOV CX, ra
+  MOV BX, CX
+  DEC BX
+  MOV AX, BX
+  PUSH DX
+  MOV DX, AX
+  ADD AX, DX
+  MUL ten
+  POP DX
+  MOV BX, AX
   I1:
-  MOV SI, 0
   PUSH CX
   MOV CX, ca
   I2:
+  MOV SI, CX
+  DEC SI
   PUSH BX
   PUSH CX
   CALL input_number
   MOV DX, BX
   POP CX
   POP BX
-  MOV WORD PTR matrixA[BX +  SI], DX
+  MOV   matrixA[BX + SI * 2], DX
   CALL advance_cursor_pos
-  ADD SI, 2
   LOOP I2
   CALL newline
   POP CX
-  ADD BX, 20
+  SUB BX, 20
   LOOP I1
 
   LEA DX, mat_b_dim_msg
@@ -231,26 +247,34 @@ take_input PROC
   LEA DX, enter_val_b_msg
   CALL print_string
 
-  MOV BX, 0
   MOV CX, rb
+  MOV BX, CX
+  DEC BX
+  MOV AX, BX
+  PUSH DX
+    MOV DX, AX
+  ADD AX, DX
+  MUL ten
+  POP DX
+  MOV BX, AX
   I3:
-  MOV SI, 0
   PUSH CX
   MOV CX, cb
   I4:
+  MOV SI, CX
+  DEC SI
   PUSH BX
   PUSH CX
   CALL input_number
   MOV DX, BX
   POP CX
   POP BX
-  MOV WORD PTR matrixB[BX +  SI], DX
+  MOV   matrixB[BX + SI * 2], DX
   CALL advance_cursor_pos
-  ADD SI, 2
   LOOP I4
   CALL newline
   POP CX
-  ADD BX, 20
+  SUB BX, 20
   LOOP I3
 
   ret
